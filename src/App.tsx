@@ -7,6 +7,7 @@ import { ResumeEditorView } from './components/ResumeEditorView';
 import { HistoryView } from './components/HistoryView';
 import { AnalysisResult } from './types';
 import { SAMPLE_JOBS } from './data/samples';
+import { generateClientFallbackAnalysis } from './utils/fallbackAnalyzer';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'landing' | 'workspace' | 'result' | 'editor' | 'history'>('landing');
@@ -64,8 +65,11 @@ export default function App() {
       saveToHistory(data);
       setActiveTab('result');
     } catch (error) {
-      console.error('Analysis failed', error);
-      alert('분석 도중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      console.warn('API analysis failed or server starting, using rule fallback engine:', error);
+      const fallbackData = generateClientFallbackAnalysis(jdText, resumeText);
+      setAnalysisResult(fallbackData);
+      saveToHistory(fallbackData);
+      setActiveTab('result');
     } finally {
       setIsAnalyzing(false);
     }
@@ -94,13 +98,20 @@ export default function App() {
         body: JSON.stringify({ jdText, resumeText: updatedResumeText }),
       });
 
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
       const data: AnalysisResult = await res.json();
       setAnalysisResult(data);
       saveToHistory(data);
       setActiveTab('result');
     } catch (e) {
-      console.error(e);
-      alert('재분석 실패');
+      console.warn('Re-analysis server request failed, using fallback:', e);
+      const fallbackData = generateClientFallbackAnalysis(jdText, updatedResumeText);
+      setAnalysisResult(fallbackData);
+      saveToHistory(fallbackData);
+      setActiveTab('result');
     } finally {
       setIsAnalyzing(false);
     }
