@@ -1,0 +1,6 @@
+{
+  "name": "JD Scanner",
+  "description": "AI 기반 채용 공고(JD) 분석 및 이력서 Gap 분석 웹앱",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

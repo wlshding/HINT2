@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-hanken: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --color-primary: #4f46e5;
+  --color-[#4f46e5]: #4f46e5;
+  --color-royal-accent: #6366f1;
+  --color-emerald-success: #10b981;
+  --color-amber-warning: #f59e0b;
+  --color-rose-error: #ef4444;
+  --color-slate-bg: #f1f5f9;
+}
+
+body {
+  font-family: var(--font-inter);
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.font-display {
+  font-family: var(--font-hanken);
+}
+
+.font-mono-tag {
+  font-family: var(--font-mono);
+}
+
